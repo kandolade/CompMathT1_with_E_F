@@ -1,0 +1,62 @@
+<html>
+<head>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+<div id="myChart"></div>
+<script src="false-position.js"></script>
+</body>
+</html>
+<script>
+
+  function f(x) {
+    return 2 * x - Math.log(x) - 7;
+  }
+  function falsePosition(f, a, b, tol) {
+    let c = (a * f(b) - b * f(a)) / (f(b) - f(a));
+    let fa = f(a);
+    let fc = f(c);
+    let i = 0;
+    while (Math.abs(fc) > tol && i < 100) {c = (a * f(b) - b * f(a)) / (f(b) - f(a));
+      fa = f(a);
+      fc = f(c);
+      if (fa * fc < 0) {
+        b = c;
+      } else {
+        a = c;
+      }
+      i++;
+    }
+    return c;
+  }
+  let root = falsePosition(f, 0, 2, 1e-3);
+  console.log(root);
+  let x = [];
+  let y = [];
+
+  for (let i = 0; i < 2; i += 0.01) {
+    x.push(i);
+    y.push(f(i));
+  }
+
+  let data = [
+    {
+      x: x,
+      y: y,
+      type: 'scatter'
+    }
+  ];
+
+  let layout = {
+    title: 'Maxotov Agzam - 2 | b | iv',
+    xaxis: {
+      range: [0, 5]
+    },
+    yaxis: {
+      range: [-10, 5]
+    }
+  };
+
+  Plotly.newPlot('myChart', data, layout);
+
+</script>

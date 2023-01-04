@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+<div id="plot"></div>
+<script>
+  function f(x) {
+    return x**3 - x - 1;
+  }
+
+  let a = 1;
+  let b = 9;
+  let maxIterations = 100;let tolerance = 0.001;
+
+  let error = Infinity;
+  let numIterations = 0;
+
+  let xData = [];
+  let yData = [];
+
+  while (error > tolerance && numIterations < maxIterations) {
+    let c = (a + b) / 2;
+    let fc = f(c);
+    if (fc > 0) {
+      b = c;
+    } else {
+      a = c;
+    }
+    error = Math.abs(b - a);
+    numIterations++;
+    xData.push(c);
+    yData.push(fc);
+  }
+  let trace = {
+    x: xData,
+    y: yData,
+    mode: 'markers',
+    type: 'scatter'
+  };
+  let layout = {
+    title: 'Maxotov Agzam - 2 | a | i',
+    xaxis: {
+      title: 'x'
+    },
+    yaxis: {
+      title: 'f(x)'
+    }
+  };
+  Plotly.newPlot('plot', [trace], layout);
+  console.log(`Root: ${c}`);
+  console.log(`Number of iterations: ${numIterations}`);
+</script>
+</body>
+</html>

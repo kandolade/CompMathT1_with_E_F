@@ -1,0 +1,60 @@
+<html>
+<head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+<div id="plot"></div>
+
+<script>
+    function f(x) {
+        return x - Math.exp(-x);
+    }
+
+    function secantMethod(x0, x1, tol, maxIter) {
+        let iter = 0;
+        let xValues = [];
+        let yValues = [];
+
+        while (Math.abs(f(x1)) > tol && iter < maxIter) {
+            iter++;
+            xValues.push(x1);
+            yValues.push(f(x1));
+
+            let x2 = x1 - f(x1) * (x1 - x0) / (f(x1) - f(x0));
+            x0 = x1;
+            x1 = x2;
+        }
+
+        return { root: x1, iterations: iter, xValues: xValues, yValues: yValues };
+    }
+
+
+    let result = secantMethod(0, 1, 0.001, 100);
+
+    let trace = {
+        x: result.xValues,
+        y: result.yValues,
+        mode: "markers",
+        type: "scatter",
+        name: "Secant Method",
+    };
+
+    let data = [trace];
+
+    let layout = {
+        title: 'Maxotov Agzam - 2 | d | i',
+        xaxis: {
+            title: "x",
+        },
+        yaxis: {
+            title: "f(x)",
+        },
+        legend: {
+            x: 0.8,
+            y: 1,
+        },
+    };
+
+    Plotly.newPlot("plot", data, layout);
+
+</script>
